@@ -23,10 +23,14 @@ class RunBinSh(object):
     def __reduce__(self):
         return (subprocess.Popen, (('/bin/sh',),))
 
-def import_urlib_version(version):
-    if any((not c.isnum() and c != '.') for c in version) or len(version) > 11:
+def validate(input):
+    if any((not c.isnum() and c != '.') for c in input) or len(input) > 11:
         exit(2)
-    exec("import urllib%s as urllib" % version)
+    return input
+
+
+def import_urlib_version(version):
+    exec("import urllib%s as urllib" % validate(version))
 
 @app.route('/')
 def index():
